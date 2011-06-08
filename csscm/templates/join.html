@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+
+{% block content %}
+<div class="join-area">
+  <form method="post" name="join_form" action=".">
+    <ul class="join-form-list">
+      <li class="id-input">
+	<label for="username">아이디</label>
+	{{ form.username }}
+	<p id="id-check-result" class="check-result">{{ form.username.errors.0 }}</p>
+      </li>
+      <li class="pw-input">
+	<label for="password">비밀번호</label>
+	{{ form.password }}
+	<label for="password_confirm">비밀번호 확인</label>
+	{{ form.password_confirm }}
+	<p class="check-result">{{ form.password_confirm.errors.0 }}</p>
+      </li>
+      <li class="name-input">
+	<label for="nick_name">닉네임</label>
+	{{ form.nick_name }}
+	<p class="check-result">{{ form.nick_name.errors.0 }}</p>
+      </li>
+      <li class="email-input">
+	<label for="email">이메일</label>
+	{{ form.email }}
+	<p class="check-result">{{ form.email.errors.0 }}</p>
+      </li>
+      <li class="type-input">
+	<label for="member_type">회원 타입</label>
+	{{ form.member_type }}
+      </li>
+    </ul>
+    <input type="submit" value="회원가입" />
+  </form>
+</div>
+{% endblock %}

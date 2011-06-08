@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+
+{% block content %}
+<div class="update-selling-item-area">
+  <h2>재고물품/판매물품 변경, 추가 페이지</h2>
+  <form method="post" name="join_form" action=".">
+    <ul class="update-form-list">
+      <li>
+	<label for="desc_head">머리말</label>
+	{{ form.desc_head }}
+	<p id="id-check-result" class="check-result">{{ form.desc_head.errors.0 }}</p>
+      </li>
+      <li>
+	<label for="selling_count">판매 물품 수</label>
+	{{ form.selling_count }}
+	<p class="check-result">{{ form.selling_count.errors.0 }}</p>
+      </li>
+      <li>
+	<label for="name">물품 이름</label>
+	{{ form.name }}
+	<p class="check-result">{{ form.name.errors.0 }}</p>
+      </li>
+      <li>
+	<label for="price">물품 가격</label>
+	{{ form.price }}
+	<p class="check-result">{{ form.price.errors.0 }}</p>
+      </li>
+      <li>
+	<label for="description">세부 설명</label>
+	{{ form.description }}
+	<p class="check-result">{{ form.description.errors.0 }}</p>
+      </li>
+      <li>
+	<label for="price">재고 수량</label>
+	{{ form.item_count }}
+	<p class="check-result">{{ form.item_count.errors.0 }}</p>
+      </li>
+      <li>
+	<label for="price">공급자 키</label>
+	{{ form.parent_member_id }}
+	<p class="check-result">{{ form.parent_member_id.errors.0 }}</p>
+      </li>
+    </ul>
+    <input type="submit" value="수정/등록 완료" />
+  </form>
+
+  <div class="wholesaler-list-area">
+    <h3>&lt;공급자 리스트&gt;</h3>
+    {% if wholesalers %}
+    <table>
+      <colgroup>
+	<col width="90px">
+	<col width="120px">
+	<col width="110px">
+      </colgroup>
+      <tr>
+	<th>공급자 키</th>
+	<th>아이디</th>
+	<th>이메일</th>
+      </tr>
+      {% for wholesaler in wholesalers %}
+      <tr>
+	<td>{{ wholesaler.id }}</td>
+	<td>{{ wholesaler.user.username }}</td>
+	<td>{{ wholesaler.user.email }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    등록된 공급자가 없습니다.
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

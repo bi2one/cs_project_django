@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+{% block link %}
+<link rel="stylesheet" type="text/css" href="/site_media/css/index.css" />
+{% endblock %}
+
+{% block content %}
+<div class="login-area">
+  {% if user.is_authenticated %}
+  <div class="login-greeting">
+    "{{ user.nick_name }}"님 안녕하세요!
+  </div>
+  <a href="/logout/">로그아웃</a>
+
+  {% ifnotequal member.member_type "consumer" %}
+  <a href="/manage/">관리 페이지</a>
+  {% endifnotequal %}
+  {% else %}
+  <form method="post" action="./" id="login-form" name="login_form">
+    <label for="username">아이디</label>
+    {{ form.username }}
+    <label for="password">비밀번호</label>
+    {{ form.password }}
+    <input type="submit" value="로그인" />
+    <a href="/join/">회원가입</a>
+  </form>
+  {% endif %}
+  
+  {% if loginError %}
+  로그인 오류입니다.
+  {% endif %}
+</div>
+
+{% ifequal member.member_type "consumer" %}
+<div class="product-area">
+  <h3>&lt;주문 현황&gt;</h3>
+  {% if consumer_items %}
+  <table class="product-table">
+    <colgroup>
+      <col width="150px">
+      <col width="110px">
+      <col width="120px">
+      <col width="80px">
+      <col width="120px">
+      <col width="270px">
+      <col />
+    </colgroup>
+    <tr>
+      <th>이미지</th>
+      <th>상품명</th>
+      <th>상품가격</th>
+      <th>상품수량</th>
+      <th>주문상태</th>
+      <th>입금계좌</th>
+      <th></th>
+    </tr>
+    {% for consumer_item in consumer_items %}
+    <tr>
+      <td><image alt="이미지-경로({{ consumer_item.item.image }})" /></td>
+      <td>{{ consumer_item.item.name }}</td>
+      <td>{{ consumer_item.item.price }}</td>
+      <td>{{ consumer_item.count }}</td>
+      <td>{{ consumer_item.item_state }}</td>
+      <td>{{ consumer_item.account }} 홍길동</td>
+      {% ifnotequal consumer_item.item_state "refund" %}
+      <td><a href="/refund_buyingitem/{{ consumer_item.id }}/">환불 처리</a></td>
+      {% else %}
+      <td>환불 처리중인 제품입니다.</td>
+      {% endifnotequal %}
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="product-empty">
+    주문한 제품이 없습니다.
+  </div>
+  {% endif %}
+</div>
+{% endifequal %}
+
+<div class="product-area">
+  <h3>&lt;판매 품목&gt;</h3>
+  {% if items %}
+  <table class="product-table">
+    <colgroup>
+      <col width="150px">
+      <col width="150px">
+      <col width="150px">
+    </colgroup>
+    <tr>
+      <th>이미지</th>
+      <th>상품명</th>
+      <th>상품가격</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+      <td><image alt="이미지-경로({{ item.item.image }})" /></td>
+      <td>
+	{% ifnotequal item.state "soldout" %}
+	<a href="/itemview/{{ item.id }}/">{{ item.item.name }}</a>
+	{% else %}
+	{{ item.item.name }} - 품절된 제품입니다.
+	{% endifnotequal %}
+      </td>
+      <td>{{ item.item.price }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="product-empty">
+    판매중인 제품이 없습니다.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

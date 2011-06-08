@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+
+{% block content %}
+<div class="itemview-area">
+  <h2>&lt;제품 페이지&gt;</h2>
+  <div class="itemview-headarea">
+    <image alt="이미지-경로({{ item.item.image }})" />
+    <div class="itemview-name">
+      이름 : {{ item.item.name }}
+    </div>
+    <div class="itemview-price">
+      가격 : {{ item.item.price }}
+    </div>
+    <div class="itemview-stock">
+      재고량 :
+      {% ifnotequal item.count 0 %}
+      {{ item.count }}
+      {% else %}
+      품절 상품입니다.
+      {% endifnotequal %}
+    </div>
+  </div>
+  <div class="itemview-description">
+    <h3>&lt;제품 설명&gt;</h3>
+    <div class="itemview-description-text">
+      {{ item.item.description }}
+    </div>
+  </div>
+
+  {% if member %}
+  {% ifequal member.member_type "consumer" %}
+  <form id="itemview-form" method="post" action="/order/">
+    <label for="count">주문수량</label>
+    {{ form.count }}
+    {% if error %}
+    <p>에러: {{ error }}</p>
+    {% endif %}
+    {{ form.item_id }}
+    <input type="submit" value="주문하기" />
+  </form>
+  {% endifequal %}
+  {% endif %}
+</div>
+{% endblock %}
