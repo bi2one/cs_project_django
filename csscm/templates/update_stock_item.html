@@ -3,19 +3,9 @@
 
 {% block content %}
 <div class="update-selling-item-area">
-  <h2>재고물품/판매물품 변경, 추가 페이지</h2>
+  <h2>재고물품 변경, 추가 페이지</h2>
   <form method="post" name="join_form" action=".">
     <ul class="update-form-list">
-      <li>
-	<label for="desc_head">머리말</label>
-	{{ form.desc_head }}
-	<p id="id-check-result" class="check-result">{{ form.desc_head.errors.0 }}</p>
-      </li>
-      <li>
-	<label for="selling_count">판매 물품 수</label>
-	{{ form.selling_count }}
-	<p class="check-result">{{ form.selling_count.errors.0 }}</p>
-      </li>
       <li>
 	<label for="name">물품 이름</label>
 	{{ form.name }}
@@ -33,11 +23,17 @@
       </li>
       <li>
 	<label for="price">재고 수량</label>
-	{{ form.item_count }}
-	<p class="check-result">{{ form.item_count.errors.0 }}</p>
+	{{ form.count }}
+	<p class="check-result">{{ form.count.errors.0 }}</p>
       </li>
+      {% ifnotequal parent_type "factory" %}
+      <li style="display:none;">
+      {% else %}
       <li>
-	<label for="price">공급자 물품 키</label>
+      {% endifnotequal %}
+	<label for="price">
+	  공장 물품 키
+	</label>
 	{{ form.parent_item_id }}
 	<p class="check-result">{{ form.parent_item_id.errors.0 }}</p>
       </li>
@@ -45,9 +41,10 @@
     <input type="submit" value="수정/등록 완료" />
   </form>
 
+  {% ifequal parent_type "factory" %}
   <div class="wholesaler-list-area">
-    <h3>&lt;공급자 물품 리스트&gt;</h3>
-    {% if wholesaler_items %}
+    <h3>&lt;공장 제조물품 리스트&gt;</h3>
+    {% if parent_items %}
     <table>
       <colgroup>
 	<col width="90px">
@@ -57,21 +54,22 @@
       <tr>
 	<th>물품 키</th>
 	<th>물품 이름</th>
-	<th>공급자 아이디</th>
-	<th>공급자 이메일</th>
+	<th>공장 아이디</th>
+	<th>공장 이메일</th>
       </tr>
-      {% for wholesaler_item in wholesaler_items %}
+      {% for parent_item in parent_items %}
       <tr>
-	<td>{{ wholesaler_item.id }}</td>
-	<td>{{ wholesaler_item.name }}</td>
-	<td>{{ wholesaler_item.member.user.username }}</td>
-	<td>{{ wholesaler_item.member.user.email }}</td>
+	<td>{{ parent_item.id }}</td>
+	<td>{{ parent_item.name }}</td>
+	<td>{{ parent_item.member.user.username }}</td>
+	<td>{{ parent_item.member.user.email }}</td>
       </tr>
       {% endfor %}
     </table>
     {% else %}
-    등록된 공급자물품이 없습니다.
+    등록된 공장물품이 없습니다.
     {% endif %}
   </div>
+  {% endifequal %}
 </div>
 {% endblock %}

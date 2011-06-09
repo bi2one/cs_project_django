@@ -66,6 +66,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'csscm.urls'
 
+ORDER_LIMIT = 5
+ORDER_UNIT = 5
+FACTORY_ORDER_UNIT = 20
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.

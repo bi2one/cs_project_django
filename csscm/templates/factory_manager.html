@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+
+{% block content %}
+<div class="retailer-manager">
+  <h2>&lt;공장 물품 관리페이지&gt;</h2>
+  <div class="retailer-buying-item-area">
+    <h3>&lt;공장 제조 요청 현황&gt;</h3>
+    {% if buying_items %}
+    <table>
+      <colgroup>
+	<col width="80px">
+	<col width="80px">
+	<col width="270px">
+	<col width="110px">
+	<col width="50px">
+	<col width="100px">
+	<col width="140px">
+	<col width="200px">
+	<col width="150px">
+	<col />
+      </colgroup>
+      <tr>
+	<th>주문코드</th>
+	<th>물건코드</th>
+	<th>가상계좌</th>
+	<th>상품명</th>
+	<th>수량</th>
+	<th>상태</th>
+	<th>공급업자아이디</th>
+	<th>공급업자메일</th>
+	<th></th>
+      </tr>
+      {% for buying_item in buying_items %}
+      <tr>
+	<td>{{ buying_item.id }}</td>
+	<td>{{ buying_item.item.id }}</td>
+	<td>{{ buying_item.account }} 홍길동</td>
+	<td>{{ buying_item.item.name }}</td>
+	<td>{{ buying_item.count }}</td>
+	<td>{{ buying_item.item_state }}</td>
+	<td>{{ buying_item.from_member.user.username }}</td>
+	<td>{{ buying_item.from_member.user.email }}</td>
+	{% ifequal buying_item.item_state "accept" %}
+	<td><a href="/finish_order/{{ buying_item.id }}/">처리완료</a></td>
+	{% else %}{% ifequal buying_item.item_state "refund" %}
+	<td><a href="/refund_order/{{ buying_item.id }}/">환불완료</a></td>
+	{% else %}{% ifequal buying_item.item_state "finish" %}
+	<td>처리완료된제품</td>
+	{% else %}{% ifequal buying_item.item_state "finish_refund" %}
+	<td>환불완료된제품</td>
+	{% endifequal %}
+	{% endifequal %}
+	{% endifequal %}
+	{% endifequal %}
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    주문중인 제품이 없습니다.
+    {% endif %}
+  </div>
+
+  <div class="retailer-buying-item-area">
+    <h3>&lt;재고 현황&gt;</h3>
+    {% if stock_items %}
+    <table>
+      <colgroup>
+	<col width="90px">
+	<col width="150px">
+	<col width="120px">
+	<col width="90px">
+	<col />
+      </colgroup>
+      <tr>
+	<th>물건코드</th>
+	<th>물건이름</th>
+	<th>가격</th>
+	<th>수량</th>
+	<th></th>
+      </tr>
+      {% for stock_item in stock_items %}
+      <tr>
+	<td>{{ stock_item.id }}</td>
+	<td>{{ stock_item.name }}</td>
+	<td>{{ stock_item.price }}</td>
+	<td>{{ stock_item.count }}</td>
+	<td><a href="/update_stock_item/{{ stock_item.id }}">정보수정</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    재고 물품이 없습니다.
+    {% endif %}
+  </div>
+  <a href="/update_stock_item/">새 상품 등록</a>
+</div>
+{% endblock %}

@@ -3,9 +3,9 @@
 
 {% block content %}
 <div class="retailer-manager">
-  <h2>&lt;소매업자 물품 관리페이지&gt;</h2>
+  <h2>&lt;공급업자 물품 관리페이지&gt;</h2>
   <div class="retailer-buying-item-area">
-    <h3>&lt;주문 현황&gt;</h3>
+    <h3>&lt;공급 요청 현황&gt;</h3>
     {% if buying_items %}
     <table>
       <colgroup>
@@ -15,7 +15,7 @@
 	<col width="110px">
 	<col width="50px">
 	<col width="100px">
-	<col width="120px">
+	<col width="140px">
 	<col width="200px">
 	<col width="150px">
 	<col />
@@ -27,8 +27,8 @@
 	<th>상품명</th>
 	<th>수량</th>
 	<th>상태</th>
-	<th>구매자아이디</th>
-	<th>구매자메일</th>
+	<th>소매업자아이디</th>
+	<th>소매업자메일</th>
 	<th></th>
       </tr>
       {% for buying_item in buying_items %}
@@ -57,83 +57,17 @@
       {% endfor %}
     </table>
     {% else %}
-    주문중인 제품이 없습니다.
+    공급 요청중인 제품이 없습니다.
     {% endif %}
   </div>
 
   <div class="retailer-buying-item-area">
-    <h3>&lt;판매물건 현황&gt;</h3>
-    {% if selling_items %}
+    <h3>&lt;물품 제조 요청 현황&gt;</h3>
+    {% if wholesaler_buying_items %}
     <table>
       <colgroup>
-	<col width="140px">
+	<col width="90px">
 	<col width="120px">
-	<col width="110px">
-	<col width="70px">
-	<col />
-      </colgroup>
-      <tr>
-	<th>판매물건코드</th>
-	<th>상품명</th>
-	<th>가격</th>
-	<th>수량</th>
-	<th></th>
-      </tr>
-      {% for selling_item in selling_items %}
-      <tr>
-	<td>{{ selling_item.id }}</td>
-	<td>{{ selling_item.item.name }}</td>
-	<td>{{ selling_item.item.price }}</td>
-	<td>{{ selling_item.count }}</td>
-	<td><a href="/update_selling_item/{{ selling_item.id }}/">정보수정</a></td>
-      </tr>
-      {% endfor %}
-    </table>
-    {% else %}
-    판매중인 제품이 없습니다.
-    {% endif %}
-  </div>
-  
-  <div class="retailer-buying-item-area">
-    <h3>&lt;재고 현황&gt;</h3>
-    {% if stock_items %}
-    <table>
-      <colgroup>
-	<col width="140px">
-	<col width="120px">
-	<col width="110px">
-	<col width="70px">
-	<col />
-      </colgroup>
-      <tr>
-	<th>재고물건코드</th>
-	<th>상품명</th>
-	<th>가격</th>
-	<th>수량</th>
-	<th></th>
-      </tr>
-      {% for stock_item in stock_items %}
-      <tr>
-	<td>{{ stock_item.id }}</td>
-	<td>{{ stock_item.name }}</td>
-	<td>{{ stock_item.price }}</td>
-	<td>{{ stock_item.count }}</td>
-	<td><a href="/update_item/{{ stock_item.id }}">정보수정</a></td>
-	
-      </tr>
-      {% endfor %}
-    </table>
-    {% else %}
-    재고 물품이 없습니다.
-    {% endif %}
-  </div>
-
-  <div class="retailer-buying-item-area">
-    <h3>&lt;재고요청 물품 현황&gt;</h3>
-    {% if retailer_buying_items %}
-    <table>
-      <colgroup>
-	<col width="70px">
 	<col width="120px">
 	<col width="110px">
 	<col width="70px">
@@ -144,29 +78,71 @@
       </colgroup>
       <tr>
 	<th>주문코드</th>
-	<th>상품명</th>
+	<th>공장제품코드</th>
+	<th>공장상품명</th>
 	<th>가격</th>
 	<th>수량</th>
-	<th>공급자 아이디</th>
-	<th>공급자 이메일</th>
+	<th>공장 아이디</th>
+	<th>공장 이메일</th>
 	<th>상태</th>
       </tr>
-      {% for retailer_buying_item in retailer_buying_items %}
+      {% for wholesaler_buying_item in wholesaler_buying_items %}
       <tr>
-	<td>{{ retailer_buying_item.id }}</td>
-	<td>{{ retailer_buying_item.item.name }}</td>
-	<td>{{ retailer_buying_item.item.price }}</td>
-	<td>{{ retailer_buying_item.count }}</td>
-	<td>{{ retailer_buying_item.item.member.user.username }}</td>
-	<td>{{ retailer_buying_item.item.member.user.email }}</td>
-	<td>{{ retailer_buying_item.item_state }}</td>
+	<td>{{ wholesaler_buying_item.id }}</td>
+	<td>{{ wholesaler_buying_item.item.id }}</td>
+	<td>{{ wholesaler_buying_item.item.name }}</td>
+	<td>{{ wholesaler_buying_item.item.price }}</td>
+	<td>{{ wholesaler_buying_item.count }}</td>
+	<td>{{ wholesaler_buying_item.item.member.user.username }}</td>
+	<td>{{ wholesaler_buying_item.item.member.user.email }}</td>
+	<td>{{ wholesaler_buying_item.item_state }}</td>
       </tr>
       {% endfor %}
     </table>
     {% else %}
-    공급요청 물품이 없습니다.
+    제조요청 물품이 없습니다.
     {% endif %}
   </div>
-  <a href="/update_selling_item/">새 상품 등록</a>
+  
+
+  <div class="retailer-buying-item-area">
+    <h3>&lt;재고 현황&gt;</h3>
+    {% if stock_items %}
+    <table>
+      <colgroup>
+	<col width="90px">
+	<col width="150px">
+	<col width="120px">
+	<col width="110px">
+	<col width="70px">
+	<col />
+	<col />
+      </colgroup>
+      <tr>
+	<th>물건코드</th>
+	<th>공장제품코드</th>
+	<th>물건이름</th>
+	<th>가격</th>
+	<th>수량</th>
+	<th></th>
+	<th></th>
+      </tr>
+      {% for stock_item in stock_items %}
+      <tr>
+	<td>{{ stock_item.id }}</td>
+	<td>{{ stock_item.parent_item.id }}</td>
+	<td>{{ stock_item.name }}</td>
+	<td>{{ stock_item.price }}</td>
+	<td>{{ stock_item.count }}</td>
+	<td><a href="/update_stock_item/{{ stock_item.id }}">정보수정</a></td>
+	<td><a href="/request_factory_item/{{ stock_item.id }}">제조요청</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    재고 물품이 없습니다.
+    {% endif %}
+  </div>
+  <a href="/update_stock_item/">새 상품 등록</a>
 </div>
 {% endblock %}

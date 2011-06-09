@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}title{% endblock %}
+
+{% block script %}
+<script>
+{% if finish_order_error %}
+alert("재고 수량보다 큰 주문수량을 수락하실 수 없습니다.");
+{% endif %}
+history.back(-1);
+</script>
+{% endblock %}

@@ -30,4 +30,7 @@ urlpatterns = patterns('',
     (r'^update_selling_item/(?P<selling_item_id>\d+)/$', 'csscm.consumers.views.update_selling_item'),
     (r'^update_selling_item/$', 'csscm.consumers.views.update_selling_item'),
     (r'^update_item/(?P<item_id>\d+)/$', 'csscm.consumers.views.update_item'),
+    (r'^update_stock_item/(?P<item_id>\d+)/$', 'csscm.consumers.views.update_stock_item'),
+    (r'^update_stock_item/$', 'csscm.consumers.views.update_stock_item'),
+    (r'^request_factory_item/(?P<item_id>\d+)/$', 'csscm.consumers.views.request_factory_item'),
 )

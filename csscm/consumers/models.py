@@ -10,7 +10,7 @@ class Member(models.Model):
 
 class Item(models.Model):
     member = models.ForeignKey(Member, related_name="stock_member")
-    parent_member = models.ForeignKey(Member, related_name="parent_member")
+    parent_item = models.ForeignKey('self', null=True)
     
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField()
@@ -27,9 +27,6 @@ class SellingItem(models.Model):
     desc_head = models.TextField()
     count = models.PositiveIntegerField()
     state = models.CharField(max_length=128)
-
-    # 추후 삭제 예정
-    price = models.PositiveIntegerField()
 
     created = models.DateTimeField(auto_now_add=True)
 

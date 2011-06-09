@@ -8,7 +8,7 @@
 <div class="login-area">
   {% if user.is_authenticated %}
   <div class="login-greeting">
-    "{{ user.nick_name }}"님 안녕하세요!
+    "{{ user.username }}"님 안녕하세요!
   </div>
   <a href="/logout/">로그아웃</a>
 
@@ -62,11 +62,17 @@
       <td>{{ consumer_item.count }}</td>
       <td>{{ consumer_item.item_state }}</td>
       <td>{{ consumer_item.account }} 홍길동</td>
-      {% ifnotequal consumer_item.item_state "refund" %}
-      <td><a href="/refund_buyingitem/{{ consumer_item.id }}/">환불 처리</a></td>
-      {% else %}
+      {% ifequal consumer_item.item_state "finish_refund" %}
+      <td>환불 처리 완료된 상품</td>
+      {% else %}{% ifequal consumer_item.item_state "finish" %}
+      <td>구매 처리 완료된 상품</td>
+      {% else %}{% ifequal consumer_item.item_state "refund" %}
       <td>환불 처리중인 제품입니다.</td>
-      {% endifnotequal %}
+      {% else %}
+      <td><a href="/refund_buyingitem/{{ consumer_item.id }}/">환불 처리</a></td>
+      {% endifequal %}
+      {% endifequal %}
+      {% endifequal %}
     </tr>
     {% endfor %}
   </table>

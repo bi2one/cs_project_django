@@ -10,13 +10,12 @@ class JoinForm(forms.Form) :
     username = forms.CharField(max_length=30, label="사용자id", required=True)
     password = forms.CharField(max_length=128, label="비밀번호", widget=forms.PasswordInput())
     password_confirm = forms.CharField(max_length=128, label="비밀번호(확인용)", widget=forms.PasswordInput())
-    nick_name = forms.CharField(max_length=30, label="닉네임", required=True)
     email = forms.EmailField(label="이메일")
     member_type = forms.ChoiceField(label="멤버타입", choices=[("consumer", "consumer"),
                                                                ("retailer", "retailer"),
                                                                ("wholesaler", "wholesaler"),
-                                                               ("factory", "factory"),
-                                                               ("manager", "manager")])
+                                                               ("factory", "factory"),])
+
 
     def clean_password_confirm(self):
         if 'password' in self.cleaned_data:
@@ -47,10 +46,10 @@ class RegistStockItemForm(forms.Form) :
     price = forms.CharField(max_length=128, required=True)
     description = forms.CharField(widget=forms.Textarea)
     count = forms.CharField(max_length=128, required=True)
-    parent_member_id = forms.CharField(max_length=128, required=True)
+    parent_item_id = forms.CharField(max_length=128, required=False)
 
     def clean_count(self):
-        count = self.cleaned_data['item_count']
+        count = self.cleaned_data['count']
 
         try:
             if int(count) < 0:
@@ -58,17 +57,6 @@ class RegistStockItemForm(forms.Form) :
             return count
         except ValueError:
             raise forms.ValidationError("숫자를 입력하셔야 합니다.")
-
-    def clean_parent_member_id(self):
-        member_id = self.cleaned_data['parent_member_id']
-
-        try:
-            if int(member_id) < 0:
-                raise forms.ValidationError('0 이상의 값을 기입하셔야 합니다.')
-            return member_id
-        except ValueError:
-            raise forms.ValidationError("숫자를 입력하셔야 합니다.")
-
 
     def clean_price(self):
         price = self.cleaned_data['price']
@@ -79,7 +67,6 @@ class RegistStockItemForm(forms.Form) :
             return price
         except ValueError:
             raise forms.ValidationError("숫자를 입력하셔야 합니다.")
-    
 
 class RegistItemForm(forms.Form) :
     desc_head = forms.CharField(widget=forms.Textarea)
@@ -88,7 +75,7 @@ class RegistItemForm(forms.Form) :
     price = forms.CharField(max_length=128, required=True)
     description = forms.CharField(widget=forms.Textarea)
     item_count = forms.CharField(max_length=128, required=True)
-    parent_member_id = forms.CharField(max_length=128, required=True)
+    parent_item_id = forms.CharField(max_length=128, required=True)
 
     def clean_selling_count(self):
         count = self.cleaned_data['selling_count']
@@ -120,12 +107,12 @@ class RegistItemForm(forms.Form) :
         except ValueError:
             raise forms.ValidationError("숫자를 입력하셔야 합니다.")
         
-    def clean_parent_member_id(self):
-        member_id = self.cleaned_data['parent_member_id']
+    def clean_parent_item_id(self):
+        item_id = self.cleaned_data['parent_item_id']
 
         try:
-            if int(member_id) < 0:
+            if int(item_id) < 0:
                 raise forms.ValidationError('0 이상의 값을 기입하셔야 합니다.')
-            return member_id
+            return item_id
         except ValueError:
             raise forms.ValidationError("숫자를 입력하셔야 합니다.")

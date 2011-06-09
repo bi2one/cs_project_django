@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}title{% endblock %}
+
+{% block script %}
+<script>
+{% if update_stock_error %}
+alert("공장 재고가 남아 있지 않습니다. 재고량을 업데이트 하고 다시 시도하세요.");
+{% endif %}
+history.back(-1);
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}title{% endblock %}
+
+{% block script %}
+<script>
+{% if update_stock_error %}
+alert("공급자가 올바르지 않습니다. 공급자가 제공하는 아이디인지 확인하세요.");
+{% endif %}
+history.back(-1);
+</script>
+{% endblock %}
